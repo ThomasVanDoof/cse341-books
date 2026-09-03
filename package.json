@@ -1,0 +1,24 @@
+{
+  "name": "cse341-books",
+  "version": "1.0.0",
+  "description": "my final school term.",
+  "main": "server.js",
+  "scripts": {
+    "start": "node --env-file=.env server.js",
+    "dev": "nodemon --env-file=.env server.js",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "module",
+    "url": "git+https://github.com/ThomasVanDoof/cse341-books.git"
+  },
+  "author": "Cave Smith",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/ThomasVanDoof/cse341-books/issues"
+  },
+  "homepage": "https://github.com/ThomasVanDoof/cse341-books#readme",
+  "devDependencies": {
+    "nodemon": "^3.1.14"
+  }
+}

@@ -1,3 +1,6 @@
+# env page
+.env
+
 # Logs
 logs
 *.log
