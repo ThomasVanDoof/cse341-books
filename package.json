@@ -3,6 +3,7 @@
   "version": "1.0.0",
   "description": "my final school term.",
   "main": "server.js",
+  "type": "module",
   "scripts": {
     "start": "node --env-file=.env server.js",
     "dev": "nodemon --env-file=.env server.js",
@@ -11,7 +12,7 @@
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "repository": {
-    "type": "module",
+    "type": "git",
     "url": "git+https://github.com/ThomasVanDoof/cse341-books.git"
   },
   "author": "Cave Smith",
