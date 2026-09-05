@@ -15,7 +15,7 @@ const connectToDb = async () => {
   // TEMPORARY DEBUG
   console.log('Connected to database:', database.databaseName);
   const collections = await database.listCollections().toArray();
-  console.log('Collections found:', collections.map(c => c.name));
+  console.log('Collections found:', collections.map(c => {return c.name}));
 
   return database;
 };
