@@ -11,12 +11,6 @@ const connectToDb = async () => {
   const client = new MongoClient(connectionString);
   await client.connect();
   database = client.db(process.env.MONGODB_DB_NAME || 'practice');
-
-  // TEMPORARY DEBUG
-  console.log('Connected to database:', database.databaseName);
-  const collections = await database.listCollections().toArray();
-  console.log('Collections found:', collections.map(c => {return c.name}));
-
   return database;
 };
 
