@@ -1,5 +1,11 @@
 import express from 'express';
-import { getBooksHandler, getBookByIdHandler } from './controllers/books.js';
+import {
+	getBooksHandler,
+	getBookByIdHandler,
+	createBookHandler,
+	updateBookHandler,
+	deleteBookHandler,
+} from './controllers/books.js';
 import {
 	getAllAuthors,
 	getAuthorById,
@@ -32,8 +38,28 @@ const router = express.Router();
  *           example: 1980
  *     Book:
  *       type: object
- *       additionalProperties: true
- *       description: A book record returned by the database
+ *       required:
+ *         - id
+ *         - authorId
+ *         - title
+ *         - publicationDate
+ *       additionalProperties: false
+ *       properties:
+ *         id:
+ *           type: string
+ *           maxLength: 50
+ *           example: b4
+ *         authorId:
+ *           type: string
+ *           example: a1
+ *         title:
+ *           type: string
+ *           maxLength: 200
+ *           example: Example Book Title
+ *         publicationDate:
+ *           type: string
+ *           format: date
+ *           example: 2026-01-15
  *     Error:
  *       type: object
  *       required:
@@ -67,6 +93,148 @@ const router = express.Router();
  *               $ref: '#/components/schemas/Error'
  */
 router.get('/books', getBooksHandler);
+
+/**
+ * @openapi
+ * /books:
+ *   post:
+ *     tags:
+ *       - Books
+ *     summary: Create a book
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             $ref: '#/components/schemas/Book'
+ *           example:
+ *             id: b4
+ *             authorId: a1
+ *             title: Example Book Title
+ *             publicationDate: 2026-01-15
+ *     responses:
+ *       '201':
+ *         description: The newly created book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       '400':
+ *         description: Invalid book data or author reference
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '409':
+ *         description: Book ID already exists
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '500':
+ *         description: Unable to create book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.post('/books', createBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   put:
+ *     tags:
+ *       - Books
+ *     summary: Update a book
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - authorId
+ *               - title
+ *               - publicationDate
+ *             additionalProperties: false
+ *             properties:
+ *               authorId:
+ *                 type: string
+ *               title:
+ *                 type: string
+ *                 maxLength: 200
+ *               publicationDate:
+ *                 type: string
+ *                 format: date
+ *           example:
+ *             authorId: a1
+ *             title: Updated Book Title
+ *             publicationDate: 2026-02-20
+ *     responses:
+ *       '200':
+ *         description: The updated book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Book'
+ *       '400':
+ *         description: Invalid book data or author reference
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '404':
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '500':
+ *         description: Unable to update book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.put('/books/:id', updateBookHandler);
+
+/**
+ * @openapi
+ * /books/{id}:
+ *   delete:
+ *     tags:
+ *       - Books
+ *     summary: Delete a book
+ *     parameters:
+ *       - in: path
+ *         name: id
+ *         required: true
+ *         schema:
+ *           type: string
+ *     responses:
+ *       '204':
+ *         description: Book deleted successfully
+ *       '404':
+ *         description: Book not found
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ *       '500':
+ *         description: Unable to delete book
+ *         content:
+ *           application/json:
+ *             schema:
+ *               $ref: '#/components/schemas/Error'
+ */
+router.delete('/books/:id', deleteBookHandler);
 
 /**
  * @openapi
