@@ -10,7 +10,7 @@ const connectToDb = async () => {
 
   const client = new MongoClient(connectionString);
   await client.connect();
-  database = client.db(process.env.MONGODB_DB_NAME || 'authors');
+  database = client.db(process.env.MONGODB_DB_NAME || 'books-cluster');
   return database;
 };
 
