@@ -1,7 +1,7 @@
-import { getDb } from '../db/connect.js';
+import { getAuthorsDb, getDb } from '../db/connect.js';
 
 const getAllAuthors = async () => {
-  const db = getDb();
+  const db = getAuthorsDb();
   const collection = db.collection('authors');
   const authors = await collection.find({}).toArray();
 
@@ -9,7 +9,7 @@ const getAllAuthors = async () => {
 };
 
 const getAuthorById = async (id) => {
-  const db = getDb();
+  const db = getAuthorsDb();
   const collection = db.collection('authors');
   const author = await collection.findOne({ id });
 
@@ -17,7 +17,7 @@ const getAuthorById = async (id) => {
 };
 
 const createAuthor = async (author) => {
-  const db = getDb();
+  const db = getAuthorsDb();
   const collection = db.collection('authors');
   const result = await collection.insertOne(author);
 
@@ -25,7 +25,7 @@ const createAuthor = async (author) => {
 };
 
 const updateAuthor = async (id, author) => {
-  const db = getDb();
+  const db = getAuthorsDb();
   const collection = db.collection('authors');
   const result = await collection.updateOne({ id }, { $set: author });
 
@@ -33,7 +33,7 @@ const updateAuthor = async (id, author) => {
 };
 
 const deleteAuthor = async (id) => {
-  const db = getDb();
+  const db = getAuthorsDb();
   const collection = db.collection('authors');
   const result = await collection.deleteOne({ id });
 

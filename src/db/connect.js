@@ -1,6 +1,7 @@
 import { MongoClient } from 'mongodb';
 
 let database;
+let authorsDatabase;
 
 const connectToDb = async () => {
   const connectionString = process.env.MONGODB_URI;
@@ -8,9 +9,20 @@ const connectToDb = async () => {
     throw new Error('MONGODB_URI is required.');
   }
 
+  const databaseName = process.env.MONGODB_DB_NAME;
+  if (!databaseName) {
+    throw new Error('MONGODB_DB_NAME is required.');
+  }
+
+  const authorsDatabaseName = process.env.MONGODB_DB_AUTHORS;
+  if (!authorsDatabaseName) {
+    throw new Error('MONGODB_DB_AUTHORS is required.');
+  }
+
   const client = new MongoClient(connectionString);
   await client.connect();
-  database = client.db(process.env.MONGODB_DB_NAME || 'authors');
+  database = client.db(databaseName);
+  authorsDatabase = client.db(authorsDatabaseName);
   return database;
 };
 
@@ -21,4 +33,11 @@ const getDb = () => {
   return database;
 };
 
-export { connectToDb, getDb };
+const getAuthorsDb = () => {
+  if (!authorsDatabase) {
+    throw new Error('Authors database not initialized. Call connectToDb first.');
+  }
+  return authorsDatabase;
+};
+
+export { connectToDb, getDb, getAuthorsDb };
